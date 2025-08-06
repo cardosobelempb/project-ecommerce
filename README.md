@@ -1,7 +1,10 @@
 # Start
 
+## S
+
 ```bash
 npx create-next-app@latest .
+npm install dotenv zod
 npm install shadcn --save-dev
 npx shadcn init
 npx shadcn@latest add button
@@ -57,3 +60,17 @@ export default [
   },
 ];
 ```
+
+# database
+
+
+# Prisma
+
+```
+npm i prisma -D
+npm i @prisma/client
+npx prisma init
+npx prisma migrate dev
+
+```
+
