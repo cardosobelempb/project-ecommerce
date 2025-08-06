@@ -1,12 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -40,88 +33,61 @@ enum ROLES {
 model User {
   id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name          String
-  email         String    @unique
-  password      String
-  gender        GENDER
-  emailVerified DateTime? @map("email_verified")
+  email         String
+  emailVerified Boolean
   image         String?
-  userName      String?   @unique @map("user_name")
-  bio           String?
-  role          ROLES     @default(CLIENT)
-  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt     DateTime? @updatedAt @map("updated_at")
-  deletedAt     DateTime? @map("deleted_at") @db.Timestamp(6)
-
-  accounts      Account[]
+  createdAt     DateTime
+  updatedAt     DateTime
   sessions      Session[]
-  authenticator Authenticator[]
+  accounts      Account[]
 
-  @@index([deletedAt])
-  @@map("users")
-}
-
-model Account {
-  userId            String? @map("user_id") @db.Uuid
-  type              String
-  provider          String
-  providerAccountId String  @map("provider_account_id")
-  refreshToken      String? @map("refresh_token")
-  accessToken       String? @map("access_token")
-  expiresAt         Int?    @map("expires_at")
-  tokenType         String? @map("token_type")
-  scope             String?
-  idToken           String? @map("id_token")
-  sessionState      String? @map("session_state")
-
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamp(6)
-  deletedAt DateTime? @map("deleted_at") @db.Timestamp(6)
-
-  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@id([provider, providerAccountId])
-  @@index([deletedAt])
-  @@map("account")
+  @@unique([email])
+  @@map("user")
 }
 
 model Session {
-  sessionToken String   @unique @map("session_token")
-  userId       String?  @map("user_id") @db.Uuid
-  expires      DateTime
-  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String   @map("user_id") @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamp(6)
-  deletedAt DateTime? @map("deleted_at") @db.Timestamp(6)
-
-  @@index([deletedAt])
+  @@unique([token])
   @@map("session")
 }
 
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
+model Account {
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  accountId             String
+  providerId            String
+  userId                String    @map("user_id") @db.Uuid
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
 
-  @@id([identifier, token])
-  @@map("verification_token")
+  @@map("account")
 }
 
-// Optional for WebAuthn support
-model Authenticator {
-  credentialID         String  @unique @map("credential_id")
-  userId               String  @map("user_id") @db.Uuid
-  providerAccountId    String  @map("provider_accountId")
-  credentialPublicKey  String  @map("credential_public_key")
-  counter              Int
-  credentialDeviceType String  @map("credential_device_type")
-  credentialBackedUp   Boolean @map("credential_backed_up")
-  transports           String?
+model Verification {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@id([userId, credentialID])
-  @@map("authenticator")
+  @@map("verification")
 }
 
 model Category {
