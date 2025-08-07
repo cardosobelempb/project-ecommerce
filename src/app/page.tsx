@@ -1,10 +1,9 @@
-import { Button } from '@/components/ui/button';
+import HeaderRoot from "@/components/shared/header-root";
 
 export default function HomePage() {
   return (
     <div>
-      <h1 className='text-red-500'>Home</h1>
-      <Button>Button Default</Button>
+      <HeaderRoot />
     </div>
   );
 }
