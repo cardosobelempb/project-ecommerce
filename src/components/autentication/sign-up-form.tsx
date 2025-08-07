@@ -1,8 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
+
+import { authClient } from "@/lib/auth-client";
 
 import { Button } from "../ui/button";
 import {
@@ -42,6 +46,7 @@ const formSchema = z
 type FormValue = z.infer<typeof formSchema>;
 
 export default function SignUpForm() {
+  const router = useRouter();
   const form = useForm<FormValue>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,10 +57,31 @@ export default function SignUpForm() {
     },
   });
 
-  function onSubmit(values: FormValue) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: FormValue) {
+    await authClient.signUp.email({
+      name: values.name, // required
+      email: values.email, // required
+      password: values.password, // required
+      // image: "https://example.com/image.png",
+      // callbackURL: "https://example.com/callback",
+      fetchOptions: {
+        onSuccess: () => {
+          toast.success("Conta criada com sucesso!");
+          router.push("/");
+        },
+        onError: (error) => {
+          if (error.error.code === "USER_ALREADY_EXISTS") {
+            form.setError("email", {
+              type: "manual",
+              message: "Email já cadastrado. Tente fazer login.",
+            });
+            toast.error("Email já cadastrado. Tente fazer login.");
+          } else {
+            toast.error(error.error.message);
+          }
+        },
+      },
+    });
   }
 
   return (
