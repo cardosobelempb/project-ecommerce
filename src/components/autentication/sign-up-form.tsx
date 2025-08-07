@@ -71,14 +71,12 @@ export default function SignUpForm() {
         },
         onError: (error) => {
           if (error.error.code === "USER_ALREADY_EXISTS") {
-            form.setError("email", {
+            return form.setError("email", {
               type: "manual",
               message: "Email já cadastrado. Tente fazer login.",
             });
-            toast.error("Email já cadastrado. Tente fazer login.");
-          } else {
-            toast.error(error.error.message);
           }
+          toast.error(error.error.message);
         },
       },
     });
