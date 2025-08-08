@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import CategoryRoot from "@/components/shared/category-root";
+import FooterRoot from "@/components/shared/footer-root";
 import HeaderRoot from "@/components/shared/header-root";
 import HeadingRoot from "@/components/shared/heading-root";
 import ProductRoot from "@/components/shared/product-root";
@@ -11,6 +12,11 @@ export default async function HomePage() {
     include: { variants: true },
   });
 
+  const newlyProducts = await prisma.product?.findMany({
+    include: { variants: true },
+    orderBy: { createdAt: "desc" },
+  });
+
   const categories = await prisma.category.findMany({});
 
   // console.log("PRODUCTS =>", products);
@@ -19,7 +25,7 @@ export default async function HomePage() {
   //   return <p>Loading...</p>;
   // }
   return (
-    <div>
+    <div className="flex min-h-screen flex-col space-y-6">
       <HeaderRoot />
       <main className="space-y-6">
         <section className="px-6">
@@ -33,14 +39,14 @@ export default async function HomePage() {
           />
         </section>
 
-        <section className="space-y-6">
-          <ProductRoot title="Marcas parceiras" products={products} />
-
-          <CategoryRoot categories={categories} />
+        <section className="px-6">
+          <HeadingRoot>Marcas parceiras</HeadingRoot>
         </section>
 
-        <section className="px-6">
-          <HeadingRoot>Mais vendidas</HeadingRoot>
+        <section className="space-y-6">
+          <ProductRoot title="Mais vendidas " products={products} />
+
+          <CategoryRoot categories={categories} />
         </section>
 
         <section className="px-6">
@@ -53,18 +59,11 @@ export default async function HomePage() {
             className="h-auto w-full"
           />
         </section>
-        <section className="px-6">
-          <HeadingRoot>Novos produtos</HeadingRoot>
+        <section className="">
+          <ProductRoot title="Novos produtos" products={newlyProducts} />
         </section>
       </main>
-      <footer className="bg-gray-100 px-6 py-8">
-        <HeadingRoot className="text-[12px]">
-          © 2025 Copyright BEWEAR
-        </HeadingRoot>
-        <p className="text-[12px] text-gray-500">
-          Todos os direitos reservados.
-        </p>
-      </footer>
+      <FooterRoot />
     </div>
   );
 }
