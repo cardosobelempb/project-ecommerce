@@ -1,6 +1,6 @@
 # Start
 
-## S
+## SE
 
 ```bash
 npx create-next-app@latest .
