@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import CategoryRoot from "@/components/shared/category-root";
 import HeaderRoot from "@/components/shared/header-root";
 import HeadingRoot from "@/components/shared/heading-root";
 import ProductRoot from "@/components/shared/product-root";
@@ -9,6 +10,8 @@ export default async function HomePage() {
   const products = await prisma.product?.findMany({
     include: { variants: true },
   });
+
+  const categories = await prisma.category.findMany({});
 
   // console.log("PRODUCTS =>", products);
 
@@ -30,8 +33,10 @@ export default async function HomePage() {
           />
         </section>
 
-        <section>
+        <section className="space-y-6">
           <ProductRoot title="Marcas parceiras" products={products} />
+
+          <CategoryRoot categories={categories} />
         </section>
 
         <section className="px-6">
