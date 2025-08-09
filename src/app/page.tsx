@@ -44,7 +44,17 @@ export default async function HomePage() {
         </section>
 
         <section className="space-y-6">
-          <ProductRoot title="Mais vendidas " products={products} />
+          <ProductRoot
+            title="Mais vendidas "
+            products={products}
+            classImage={{
+              width: "w-[200px]",
+              height: "h-[200px]",
+              rounded: "rounded-md",
+              size: "w-[200px] h-[200px]",
+            }}
+            width="w-[200px]"
+          />
 
           <CategoryRoot categories={categories} />
         </section>
@@ -60,7 +70,17 @@ export default async function HomePage() {
           />
         </section>
         <section className="">
-          <ProductRoot title="Novos produtos" products={newlyProducts} />
+          <ProductRoot
+            title="Novos produtos"
+            products={newlyProducts}
+            classImage={{
+              width: "w-[200px]",
+              height: "h-[200px]",
+              rounded: "rounded-md",
+              size: "w-[200px] h-[200px]",
+            }}
+            width="w-[200px]"
+          />
         </section>
       </main>
       <FooterRoot />

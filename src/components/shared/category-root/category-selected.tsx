@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 
 import { CategoryRootProps } from "./category-types";
@@ -12,12 +14,12 @@ export default function CategorySelected({ categories }: CategoryRootProps) {
             className="w-full cursor-pointer rounded-full bg-white text-xs font-semibold text-black"
             key={category.id}
           >
-            {/* <Link
+            <Link
               className="roundend-full w-full bg-white"
               href={`/category/${category.slug}`}
-            > */}
-            {category.name}
-            {/* </Link> */}
+            >
+              {category.name}
+            </Link>
           </Button>
         ))}
       </div>
