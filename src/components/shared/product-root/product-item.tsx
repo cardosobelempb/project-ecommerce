@@ -16,26 +16,29 @@ export default function ProductItem({
   classContent,
   ...props
 }: ProductItemRootProps) {
-  const firstVariant = product.variants[0];
+  const firstVariant = product?.variants[0];
   return (
     <article
       className={cn("", width, height, rounded, size, classContent)}
       {...props}
     >
-      <Link className="flex flex-col gap-4" href={`/producs/${product.slug}`}>
+      <Link
+        className="flex flex-col gap-4"
+        href={`/product/variant/${firstVariant?.slug}`}
+      >
         <ImageRoot
           {...classImage}
+          alt={product?.name}
           src={
             firstVariant?.imageUrl ||
             "https://d4lgxe9bm8juw.cloudfront.net/products/Jaquetas+%26+Moletons/1/74ab7c8c_7c54_4c49_8084_24a87fe0fc85.jpg"
           }
-          alt={product.name}
         />
 
         <div className={cn("flex flex-col gap-1")}>
-          <p className="truncate text-sm font-medium">{product.name}</p>
+          <p className="truncate text-sm font-medium">{product?.name}</p>
           <p className="text-muted-foreground truncate text-xs font-medium">
-            {product.description}
+            {product?.description}
           </p>
           <p className="truncate text-sm font-semibold">
             {formatMoney(firstVariant?.price || 0.0)}

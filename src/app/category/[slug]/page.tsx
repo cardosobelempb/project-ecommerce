@@ -11,7 +11,7 @@ export default async function CategoryPage({ params }: CategoryParmsProps) {
 
   const category = await prisma.category.findFirst({
     where: {
-      slug: slug,
+      slug,
     },
   });
 

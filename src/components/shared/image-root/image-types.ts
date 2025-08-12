@@ -1,6 +1,7 @@
 export interface ImageRootProps {
   src: string
   alt: string
+  selected?: boolean | string
   className?: string
   width?: string // classes Tailwind, ex: 'w-full' ou 'w-1/2'
   height?: string // classes Tailwind, ex: 'h-64' ou 'h-[300px]'

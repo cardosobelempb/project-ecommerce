@@ -27,6 +27,20 @@ export interface ProductItemRootProps extends Partial<ProductContentProps> {
   product: (Product & { variants: ProductVariant[] });
 }
 
+export interface ProductParmsProps {
+  params: Promise<{slug: string}>
+}
+
+export interface ProductVariantParmsProps {
+  params: Promise<{variant: string}>
+}
+
+export interface ProductVariantProps {
+  selectedVariantSlug?: string
+  variants: ProductVariant[]
+}
+
+
 
 // interface ProductRootProps {
 //   tile: string;
